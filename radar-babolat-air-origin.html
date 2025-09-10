@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radarový graf – Babolat Air Origin</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #fff;
+      font-family: Arial, sans-serif;
+    }
+    #radarContainer {
+      max-width: 400px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="radarContainer">
+    <canvas id="radarChart" width="300" height="300"></canvas>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('radarChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'radar',
+      data: {
+        labels: ['Síla', 'Kontrola', 'Komfort', 'Manévrovatelnost', 'Spin', 'Tolerance'],
+        datasets: [{
+          label: 'Babolat Air Origin',
+          data: [10, 8, 6, 5, 6, 8],
+          backgroundColor: 'rgba(198, 232, 1, 0.2)',
+          borderColor: '#003d79',
+          pointBackgroundColor: '#003d79',
+          borderWidth: 2,
+          pointRadius: 5,
+          pointHoverRadius: 7
+        }]
+      },
+      options: {
+        responsive: true,
+        animation: {
+          duration: 1500,
+          easing: 'easeOutQuart'
+        },
+        scales: {
+          r: {
+            min: 0,
+            max: 10,
+            ticks: {
+              stepSize: 2,
+              backdropColor: 'transparent',
+              color: '#003d79'
+            },
+            grid: { color: '#c6e801' },
+            angleLines: { color: '#c6e801' },
+            pointLabels: {
+              color: '#003d79',
+              font: { size: 14 }
+            }
+          }
+        },
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
