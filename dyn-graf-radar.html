@@ -20,7 +20,7 @@
 
     body {
       margin: 0;
-      font-family: 'Poppins', sans-serif;
+      font-family: Poppins, sans-serif;
       background: #fff;
       color: var(--navy);
     }
@@ -34,6 +34,7 @@
       padding: 24px 16px;
       gap: 24px;
       align-items: stretch;
+      height: 480px;
     }
 
     .table-section,
@@ -75,21 +76,18 @@
 
     canvas {
       width: 100% !important;
-      height: auto !important;
+      height: 100% !important;
       max-width: 100%;
     }
 
     @media screen and (max-width: 860px) {
       .container {
         flex-direction: column;
+        height: auto;
       }
 
-      .container > * {
-        width: 100%;
-      }
-
-      canvas {
-        max-height: 360px;
+      .chart-section {
+        height: 400px;
       }
     }
   </style>
@@ -178,14 +176,6 @@
         }
       }
     });
-
-    function syncHeights() {
-      const tableHeight = document.querySelector('.table-section').offsetHeight;
-      document.querySelector('.chart-section canvas').style.height = tableHeight + 'px';
-    }
-
-    window.addEventListener('load', syncHeights);
-    window.addEventListener('resize', syncHeights);
   </script>
 </body>
 </html>
