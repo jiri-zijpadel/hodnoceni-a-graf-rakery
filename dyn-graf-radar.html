@@ -1,68 +1,94 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Radarový graf</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Radarový graf hodnocení padelové rakety</title>
+  <meta name="description" content="Dynamický radarový graf padelové rakety podle parametrů – síla, kontrola, komfort, ovladatelnost, rotace, tolerance.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 2rem;
-      display: flex;
-      justify-content: center;
-      background: #fff;
+    :root {
+      --navy:#003d79;
+      --lime:#c6e801;
     }
+
+    body {
+      font-family: Poppins, system-ui, sans-serif;
+      margin: 0;
+      padding: 32px 16px;
+      background: #fff;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+    }
+
     canvas {
-      max-width: 400px;
-      max-height: 400px;
+      max-width: 100%;
+      height: auto;
+    }
+
+    figcaption {
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 12px;
+      color: #666;
     }
   </style>
 </head>
 <body>
-  <canvas id="radarChart"></canvas>
+  <h2>Hodnocení vlastností</h2>
+  <canvas id="radarChart" width="400" height="400" aria-label="Radarový graf hodnocení" role="img"></canvas>
+  <figcaption>Radarový graf padelové rakety – síla, kontrola, komfort, ovladatelnost, rotace, tolerance</figcaption>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const get = (key) => parseInt(params.get(key)) || 0;
+    // Funkce pro načtení parametrů z URL
+    function getParam(name, fallback) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const val = parseFloat(urlParams.get(name));
+      return isNaN(val) ? fallback : val;
+    }
 
-    const data = {
-      labels: ['Síla', 'Kontrola', 'Komfort', 'Manévrovatelnost', 'Spin', 'Tolerance'],
-      datasets: [{
-        label: 'Hodnocení rakety',
-        data: [
-          get('sila'),
-          get('kontrola'),
-          get('komfort'),
-          get('manevrovatelnost'),
-          get('spin'),
-          get('tolerance')
-        ],
-        backgroundColor: 'rgba(198, 232, 1, 0.2)',
-        borderColor: '#003d79',
-        pointBackgroundColor: '#003d79',
-        borderWidth: 2,
-        borderDash: [5, 5]
-      }]
-    };
+    const dataValues = [
+      getParam('sila', 10),
+      getParam('kontrola', 8),
+      getParam('komfort', 7),
+      getParam('ovladatelnost', 7),
+      getParam('rotace', 9),
+      getParam('tolerance', 8)
+    ];
 
-    new Chart(document.getElementById('radarChart'), {
+    const ctx = document.getElementById('radarChart').getContext('2d');
+    new Chart(ctx, {
       type: 'radar',
-      data: data,
+      data: {
+        labels: ['Síla', 'Kontrola', 'Komfort', 'Ovladatelnost', 'Rotace míče', 'Tolerance'],
+        datasets: [{
+          label: 'Hodnocení rakety',
+          data: dataValues,
+          backgroundColor: 'rgba(198, 232, 1, 0.2)',
+          borderColor: '#003d79',
+          borderWidth: 2,
+          pointBackgroundColor: '#003d79',
+          borderDash: [6, 4]
+        }]
+      },
       options: {
         responsive: true,
-        plugins: {
-          legend: { display: false }
-        },
         scales: {
           r: {
             min: 0,
             max: 10,
             ticks: {
               stepSize: 2,
-              backdropColor: 'transparent',
-              color: '#003d79'
+              color: '#003d79',
+              backdropColor: 'transparent'
             },
             grid: { color: '#c6e801' },
             angleLines: { color: '#c6e801' },
@@ -71,7 +97,8 @@
               font: { size: 14 }
             }
           }
-        }
+        },
+        plugins: { legend: { display: false } }
       }
     });
   </script>
