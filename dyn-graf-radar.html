@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="cs">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Radarový graf – Babolat Air Origin</title>
+  <title>Dynamický radarový graf</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
@@ -29,14 +28,24 @@
   </div>
 
   <script>
+    const params = new URLSearchParams(window.location.search);
+    const data = [
+      parseInt(params.get('sila')) || 0,
+      parseInt(params.get('kontrola')) || 0,
+      parseInt(params.get('komfort')) || 0,
+      parseInt(params.get('manevrovatelnost')) || 0,
+      parseInt(params.get('spin')) || 0,
+      parseInt(params.get('tolerance')) || 0
+    ];
+
     const ctx = document.getElementById('radarChart').getContext('2d');
     new Chart(ctx, {
       type: 'radar',
       data: {
         labels: ['Síla', 'Kontrola', 'Komfort', 'Manévrovatelnost', 'Spin', 'Tolerance'],
         datasets: [{
-          label: 'Babolat Air Origin',
-          data: [10, 8, 6, 5, 6, 8],
+          label: 'Radarový profil',
+          data: data,
           backgroundColor: 'rgba(198, 232, 1, 0.2)',
           borderColor: '#003d79',
           pointBackgroundColor: '#003d79',
