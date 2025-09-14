@@ -2,103 +2,169 @@
 <html lang="cs">
 <head>
   <meta charset="UTF-8">
-  <title>Radarový graf hodnocení padelové rakety</title>
-  <meta name="description" content="Dynamický radarový graf padelové rakety podle parametrů – síla, kontrola, komfort, ovladatelnost, rotace, tolerance.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
-      --navy:#003d79;
-      --lime:#c6e801;
+      --navy: #003d79;
+      --lime: #c6e801;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
-      font-family: Poppins, system-ui, sans-serif;
       margin: 0;
-      padding: 32px 16px;
+      font-family: Poppins, sans-serif;
       background: #fff;
       color: var(--navy);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
     }
 
-    h2 {
-      font-size: 1.6rem;
+    .container {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .table-section,
+    .chart-section {
+      flex: 1 1 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 120px 1fr 32px;
+      align-items: center;
       margin-bottom: 12px;
     }
 
-    canvas {
-      max-width: 100%;
-      height: auto;
+    .label {
+      font-weight: 600;
     }
 
-    figcaption {
-      font-size: 0.9rem;
-      text-align: center;
-      margin-top: 12px;
-      color: #666;
+    .bar-container {
+      background: #d9dee5;
+      height: 10px;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .bar {
+      height: 100%;
+      background: var(--lime);
+      border-radius: 6px;
+    }
+
+    .value {
+      text-align: right;
+      font-weight: 600;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: auto !important;
+      max-height: 300px;
+    }
+
+    @media screen and (max-width: 860px) {
+      .container {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
 <body>
-  <h2>Hodnocení vlastností</h2>
-  <canvas id="radarChart" width="400" height="400" aria-label="Radarový graf hodnocení" role="img"></canvas>
-  <figcaption>Radarový graf padelové rakety – síla, kontrola, komfort, ovladatelnost, rotace, tolerance</figcaption>
+  <div class="container">
+    <div class="table-section" id="rating-table"></div>
+    <div class="chart-section">
+      <canvas id="radarChart"></canvas>
+    </div>
+  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    // Funkce pro načtení parametrů z URL
-    function getParam(name, fallback) {
-      const urlParams = new URLSearchParams(window.location.search);
-      const val = parseFloat(urlParams.get(name));
-      return isNaN(val) ? fallback : val;
-    }
-
-    const dataValues = [
-      getParam('sila', 10),
-      getParam('kontrola', 8),
-      getParam('komfort', 7),
-      getParam('ovladatelnost', 7),
-      getParam('rotace', 9),
-      getParam('tolerance', 8)
+    const params = new URLSearchParams(window.location.search);
+    const metrics = [
+      { key: 'sila', label: 'Síla' },
+      { key: 'kontrola', label: 'Kontrola' },
+      { key: 'komfort', label: 'Komfort' },
+      { key: 'ovladatelnost', label: 'Ovladatelnost' },
+      { key: 'rotace', label: 'Rotace míče' },
+      { key: 'tolerance', label: 'Tolerance' }
     ];
+
+    const table = document.getElementById('rating-table');
+    const chartData = [];
+
+    const labels = [];
+
+    metrics.forEach(({ key, label }) => {
+      const value = parseInt(params.get(key)) || 0;
+      chartData.push(value);
+      labels.push(label);
+
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.innerHTML = `
+        <div class="label">${label}</div>
+        <div class="bar-container"><div class="bar" style="width:${value * 10}%"></div></div>
+        <div class="value">${value}</div>
+      `;
+      table.appendChild(row);
+    });
 
     const ctx = document.getElementById('radarChart').getContext('2d');
     new Chart(ctx, {
       type: 'radar',
       data: {
-        labels: ['Síla', 'Kontrola', 'Komfort', 'Ovladatelnost', 'Rotace míče', 'Tolerance'],
+        labels: labels,
         datasets: [{
-          label: 'Hodnocení rakety',
-          data: dataValues,
+          data: chartData,
           backgroundColor: 'rgba(198, 232, 1, 0.2)',
           borderColor: '#003d79',
-          borderWidth: 2,
+          borderDash: [5, 5],
           pointBackgroundColor: '#003d79',
-          borderDash: [6, 4]
+          pointRadius: 4,
+          borderWidth: 2
         }]
       },
       options: {
         responsive: true,
+        maintainAspectRatio: true,
         scales: {
           r: {
             min: 0,
             max: 10,
             ticks: {
               stepSize: 2,
-              color: '#003d79',
-              backdropColor: 'transparent'
+              display: false
             },
-            grid: { color: '#c6e801' },
-            angleLines: { color: '#c6e801' },
+            grid: {
+              color: '#c6e801'
+            },
+            angleLines: {
+              color: '#c6e801'
+            },
             pointLabels: {
               color: '#003d79',
-              font: { size: 14 }
+              font: {
+                size: 14,
+                family: 'Poppins'
+              }
             }
           }
         },
-        plugins: { legend: { display: false } }
+        plugins: {
+          legend: { display: false }
+        }
       }
     });
   </script>
