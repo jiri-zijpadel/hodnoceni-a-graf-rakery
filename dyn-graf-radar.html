@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dynamický radarový graf</title>
+  <title>Radarový graf</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
@@ -26,19 +25,19 @@
   <canvas id="radarChart"></canvas>
   <script>
     const params = new URLSearchParams(window.location.search);
-    const get = (key, fallback = 0) => parseInt(params.get(key)) || fallback;
+    const get = (key) => parseInt(params.get(key)) || 0;
 
     const data = {
       labels: ['Síla', 'Kontrola', 'Komfort', 'Manévrovatelnost', 'Spin', 'Tolerance'],
       datasets: [{
         label: 'Hodnocení rakety',
         data: [
-          get('sila', 0),
-          get('kontrola', 0),
-          get('komfort', 0),
-          get('manevrovatelnost', 0),
-          get('spin', 0),
-          get('tolerance', 0)
+          get('sila'),
+          get('kontrola'),
+          get('komfort'),
+          get('manevrovatelnost'),
+          get('spin'),
+          get('tolerance')
         ],
         backgroundColor: 'rgba(198, 232, 1, 0.2)',
         borderColor: '#003d79',
@@ -48,70 +47,13 @@
       }]
     };
 
-    
-    const chartContainer = document.getElementById('radarChart');
-    let chartInitialized = false;
-
-    function renderChart() {
-      if (chartInitialized) return;
-      chartInitialized = true;
-
-      new Chart(chartContainer, {
-        type: 'radar',
-        data,
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { display: false }
-          },
-          animation: {
-            duration: 1500,
-            easing: 'easeOutQuart'
-          },
-          scales: {
-            r: {
-              min: 0,
-              max: 10,
-              ticks: {
-                stepSize: 2,
-                backdropColor: 'transparent',
-                color: '#003d79'
-              },
-              grid: { color: '#c6e801' },
-              angleLines: { color: '#c6e801' },
-              pointLabels: {
-                color: '#003d79',
-                font: { size: 14 }
-              }
-            }
-          }
-        }
-      });
-    }
-
-    // Detekce mobil/tablet vs desktop
-    const isMobile = window.matchMedia("(max-width: 1024px)").matches;
-
-    if (isMobile) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            renderChart();
-          }
-        });
-      }, { threshold: 0.5 });
-
-      observer.observe(chartContainer);
-    } else {
-      chartContainer.addEventListener('mouseenter', renderChart);
-    }
-
+    new Chart(document.getElementById('radarChart'), {
       type: 'radar',
-      data,
+      data: data,
       options: {
         responsive: true,
         plugins: {
-          legend: { display: false },
+          legend: { display: false }
         },
         scales: {
           r: {
