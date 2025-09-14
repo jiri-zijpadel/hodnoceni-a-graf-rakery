@@ -49,35 +49,62 @@
     };
 
     
-    
-    new Chart(document.getElementById('radarChart'), {
-      type: 'radar',
-      data,
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { display: false }
-        },
-        scales: {
-          r: {
-            min: 0,
-            max: 10,
-            ticks: {
-              stepSize: 2,
-              backdropColor: 'transparent',
-              color: '#003d79'
-            },
-            grid: { color: '#c6e801' },
-            angleLines: { color: '#c6e801' },
-            pointLabels: {
-              color: '#003d79',
-              font: { size: 14 }
+    const chartContainer = document.getElementById('radarChart');
+    let chartInitialized = false;
+
+    function renderChart() {
+      if (chartInitialized) return;
+      chartInitialized = true;
+
+      new Chart(chartContainer, {
+        type: 'radar',
+        data,
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false }
+          },
+          animation: {
+            duration: 1500,
+            easing: 'easeOutQuart'
+          },
+          scales: {
+            r: {
+              min: 0,
+              max: 10,
+              ticks: {
+                stepSize: 2,
+                backdropColor: 'transparent',
+                color: '#003d79'
+              },
+              grid: { color: '#c6e801' },
+              angleLines: { color: '#c6e801' },
+              pointLabels: {
+                color: '#003d79',
+                font: { size: 14 }
+              }
             }
           }
         }
-      }
-    });
+      });
+    }
 
+    // Detekce mobil/tablet vs desktop
+    const isMobile = window.matchMedia("(max-width: 1024px)").matches;
+
+    if (isMobile) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            renderChart();
+          }
+        });
+      }, { threshold: 0.5 });
+
+      observer.observe(chartContainer);
+    } else {
+      chartContainer.addEventListener('mouseenter', renderChart);
+    }
 
       type: 'radar',
       data,
