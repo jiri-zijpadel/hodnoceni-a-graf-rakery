@@ -17,8 +17,8 @@
       background: #fff;
     }
     canvas {
-      max-width: 350px;
-      max-height: 350px;
+      max-width: 400px;
+      max-height: 400px;
     }
   </style>
 </head>
@@ -48,7 +48,37 @@
       }]
     };
 
+    
+    
     new Chart(document.getElementById('radarChart'), {
+      type: 'radar',
+      data,
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          r: {
+            min: 0,
+            max: 10,
+            ticks: {
+              stepSize: 2,
+              backdropColor: 'transparent',
+              color: '#003d79'
+            },
+            grid: { color: '#c6e801' },
+            angleLines: { color: '#c6e801' },
+            pointLabels: {
+              color: '#003d79',
+              font: { size: 14 }
+            }
+          }
+        }
+      }
+    });
+
+
       type: 'radar',
       data,
       options: {
