@@ -1,61 +1,67 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dynamický radarový graf</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
+      font-family: 'Poppins', sans-serif;
       margin: 0;
-      padding: 0;
+      padding: 2rem;
       display: flex;
       justify-content: center;
-      align-items: center;
+      background: #fff;
     }
-    #radarContainer {
+    canvas {
       max-width: 400px;
-      width: 100%;
+      max-height: 400px;
     }
   </style>
 </head>
 <body>
-  <div id="radarContainer">
-    <canvas id="radarChart" width="300" height="300"></canvas>
-  </div>
-
+  <canvas id="radarChart"></canvas>
   <script>
     const params = new URLSearchParams(window.location.search);
-    const data = [
-      parseInt(params.get('sila')) || 0,
-      parseInt(params.get('kontrola')) || 0,
-      parseInt(params.get('komfort')) || 0,
-      parseInt(params.get('manevrovatelnost')) || 0,
-      parseInt(params.get('spin')) || 0,
-      parseInt(params.get('tolerance')) || 0
-    ];
+    const get = (key, fallback = 0) => parseInt(params.get(key)) || fallback;
 
-    const ctx = document.getElementById('radarChart').getContext('2d');
-    new Chart(ctx, {
+    const data = {
+      labels: ['Síla', 'Kontrola', 'Komfort', 'Manévrovatelnost', 'Spin', 'Tolerance'],
+      datasets: [{
+        label: 'Hodnocení rakety',
+        data: [
+          get('sila', 0),
+          get('kontrola', 0),
+          get('komfort', 0),
+          get('manevrovatelnost', 0),
+          get('spin', 0),
+          get('tolerance', 0)
+        ],
+        backgroundColor: 'rgba(198, 232, 1, 0.2)',
+        borderColor: '#003d79',
+        pointBackgroundColor: '#003d79',
+        borderWidth: 2,
+        borderDash: [5, 5]
+      }]
+    };
+
+    new Chart(document.getElementById('radarChart'), {
       type: 'radar',
-      data: {
-        labels: ['Síla', 'Kontrola', 'Komfort', 'Manévrovatelnost', 'Spin', 'Tolerance'],
-        datasets: [{
-          label: 'Radarový profil',
-          data: data,
-          backgroundColor: 'rgba(198, 232, 1, 0.2)',
-          borderColor: '#003d79',
-          pointBackgroundColor: '#003d79',
-          borderWidth: 2,
-          pointRadius: 5,
-          pointHoverRadius: 7
-        }]
-      },
+      data,
       options: {
         responsive: true,
-        animation: {
-          duration: 1500,
-          easing: 'easeOutQuart'
+        plugins: {
+          legend: { display: false },
+          datalabels: {
+            color: '#003d79',
+            font: { weight: 'bold' },
+            formatter: (value) => value,
+            anchor: 'end',
+            align: 'top'
+          }
         },
         scales: {
           r: {
@@ -73,11 +79,9 @@
               font: { size: 14 }
             }
           }
-        },
-        plugins: {
-          legend: { display: false }
         }
-      }
+      },
+      plugins: [ChartDataLabels]
     });
   </script>
 </body>
