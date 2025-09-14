@@ -34,6 +34,15 @@
       gap: 24px;
       align-items: stretch;
     }
+    @media (max-width: 600px) {
+      .container {
+        flex-direction: column;
+      }
+
+      canvas {
+        max-height: 325px;
+    }
+}
 
     .table-section,
     .chart-section {
