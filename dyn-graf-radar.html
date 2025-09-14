@@ -55,13 +55,6 @@
         responsive: true,
         plugins: {
           legend: { display: false },
-          datalabels: {
-            color: '#003d79',
-            font: { weight: 'bold' },
-            formatter: (value) => value,
-            anchor: 'end',
-            align: 'top'
-          }
         },
         scales: {
           r: {
@@ -80,8 +73,7 @@
             }
           }
         }
-      },
-      plugins: [ChartDataLabels]
+      }
     });
   </script>
 </body>
