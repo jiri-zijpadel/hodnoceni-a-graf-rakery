@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title></title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -28,6 +28,7 @@
       width: 100%;
       max-width: 1080px;
       margin: 0 auto;
+      padding: 24px 16px;
       gap: 24px;
       align-items: stretch;
     }
@@ -72,7 +73,7 @@
     canvas {
       width: 100% !important;
       height: auto !important;
-      max-height: 300px;
+      max-width: 100%;
     }
 
     @media screen and (max-width: 860px) {
@@ -103,7 +104,6 @@
 
     const table = document.getElementById('rating-table');
     const chartData = [];
-
     const labels = [];
 
     metrics.forEach(({ key, label }) => {
@@ -121,8 +121,9 @@
       table.appendChild(row);
     });
 
-    const ctx = document.getElementById('radarChart').getContext('2d');
-    new Chart(ctx, {
+    const canvas = document.getElementById('radarChart');
+    const ctx = canvas.getContext('2d');
+    const chart = new Chart(ctx, {
       type: 'radar',
       data: {
         labels: labels,
@@ -138,7 +139,7 @@
       },
       options: {
         responsive: true,
-        maintainAspectRatio: true,
+        maintainAspectRatio: false,
         scales: {
           r: {
             min: 0,
@@ -167,6 +168,14 @@
         }
       }
     });
+
+    function syncHeights() {
+      const tableHeight = document.querySelector('.table-section').offsetHeight;
+      document.querySelector('.chart-section canvas').style.height = tableHeight + 'px';
+    }
+
+    window.addEventListener('load', syncHeights);
+    window.addEventListener('resize', syncHeights);
   </script>
 </body>
 </html>
