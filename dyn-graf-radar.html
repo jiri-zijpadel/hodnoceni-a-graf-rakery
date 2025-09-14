@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
@@ -17,7 +20,7 @@
 
     body {
       margin: 0;
-      font-family: Poppins, sans-serif;
+      font-family: 'Poppins', sans-serif;
       background: #fff;
       color: var(--navy);
     }
@@ -31,7 +34,6 @@
       padding: 24px 16px;
       gap: 24px;
       align-items: stretch;
-      height: 480px;
     }
 
     .table-section,
@@ -73,18 +75,21 @@
 
     canvas {
       width: 100% !important;
-      height: 100% !important;
+      height: auto !important;
       max-width: 100%;
     }
 
     @media screen and (max-width: 860px) {
       .container {
         flex-direction: column;
-        height: auto;
       }
 
-      .chart-section {
-        height: 400px;
+      .container > * {
+        width: 100%;
+      }
+
+      canvas {
+        max-height: 360px;
       }
     }
   </style>
@@ -173,6 +178,14 @@
         }
       }
     });
+
+    function syncHeights() {
+      const tableHeight = document.querySelector('.table-section').offsetHeight;
+      document.querySelector('.chart-section canvas').style.height = tableHeight + 'px';
+    }
+
+    window.addEventListener('load', syncHeights);
+    window.addEventListener('resize', syncHeights);
   </script>
 </body>
 </html>
