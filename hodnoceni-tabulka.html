@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tabulka hodnocení</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --navy:#003d79; --lime:#c6e801; }
+    body {
+      margin:0; font-family:Poppins,sans-serif; color:var(--navy);
+      width:100%; background:#fff;
+    }
+    .table-section { width:100%; padding:20px 16px; }
+    .row {
+      display:grid;
+      grid-template-columns:120px 1fr 32px;
+      align-items:center;
+      margin-bottom:12px;
+    }
+    .label { font-weight:600; }
+    .bar-container {
+      background:#d9dee5; height:10px; border-radius:6px; overflow:hidden;
+    }
+    .bar { height:100%; background:var(--lime); border-radius:6px; }
+    .value { text-align:right; font-weight:600; }
+  </style>
+</head>
+<body>
+  <div class="table-section" id="rating-table"></div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const metrics = [
+      { key:'sila', label:'Síla' },
+      { key:'kontrola', label:'Kontrola' },
+      { key:'komfort', label:'Komfort' },
+      { key:'ovladatelnost', label:'Ovladatelnost' },
+      { key:'rotace', label:'Rotace míče' },
+      { key:'tolerance', label:'Tolerance' }
+    ];
+
+    const table = document.getElementById('rating-table');
+    metrics.forEach(({ key, label }) => {
+      const value = parseInt(params.get(key)) || 0;
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.innerHTML = `
+        <div class="label">${label}</div>
+        <div class="bar-container"><div class="bar" style="width:${value*10}%"></div></div>
+        <div class="value">${value}</div>
+      `;
+      table.appendChild(row);
+    });
+  </script>
+</body>
+</html>
