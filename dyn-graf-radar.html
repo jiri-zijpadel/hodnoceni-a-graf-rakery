@@ -14,94 +14,85 @@
       --lime: #c6e801;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Poppins, sans-serif;
-      background: #fff;
-      color: var(--navy);
-    }
-
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    font-family: Poppins, sans-serif;
+    background: #fff;
+    color: var(--navy);
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 32px;
+    align-items: flex-start;
+  }
+  
+  . table-section,
+  .chart-section {
+    flex: 1 1 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .row {
+    display: grid;
+    grid-template-columns: 120px 1fr 32px;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  
+  .label {
+    font-weight: 600;
+  }
+  
+  .bar-container {
+    background: #d9dee5;
+    height: 10px;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  
+  .bar {
+    height: 100%;
+    background: var(--lime);
+    border-radius: 6px;
+  }
+  
+  .value {
+    text-align: right;
+    font-weight: 600;
+  }
+  
+  /* === MOBILE / TABLET BREAKPOINT === */
+  @media (max-width: 768px) {
     .container {
-      display: flex;
-      flex-direction: row;
-      width: 100%;
-      margin: 0 auto;
-      padding: 20px 5px;
-      gap: 24px;
-      align-items: stretch;
-    }
-    @media (max-width: 600px) {
-      .container {
-        flex-direction: column;
-      }
-
-      canvas {
-        max-height: 325px;
-    }
-}
-
-    .table-section,
-    .chart-section {
-      flex: 1 1 50%;
-      display: flex;
       flex-direction: column;
-      justify-content: center;
+      gap: 24px;
+      padding: 16px;
     }
-
-    .row {
-      display: grid;
-      grid-template-columns: 120px 1fr 32px;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .label {
-      font-weight: 600;
-    }
-
-    .bar-container {
-      background: #d9dee5;
-      height: 10px;
-      border-radius: 6px;
-      overflow: hidden;
-    }
-
-    .bar {
-      height: 100%;
-      background: var(--lime);
-      border-radius: 6px;
-    }
-
-    .value {
-      text-align: right;
-      font-weight: 600;
-    }
-    @media (max-width: 990px) {
-      .container {
-        flex-direction: column;
-        gap: 20px;
-      }
   
-      .table-wrapper,
-      .chart-wrapper {
-        width: 100%;
-      }
-  
-      canvas {
-        max-height: 325px;
-        width: 100%;
-      }
+    .chart-section,
+    .table-section {
+      width: 100%;
     }
+  
     canvas {
-      width: 100% !important;
-      height: 100% !important;
       max-height: 325px;
+      width: 100%;
+      height: auto;
     }
-
+  }
   </style>
 </head>
 <body>
