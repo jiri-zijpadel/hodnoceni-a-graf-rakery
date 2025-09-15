@@ -10,89 +10,100 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
-      --navy: #003d79;
-      --lime: #c6e801;
-    }
+  --navy: #003d79;
+  --lime: #c6e801;
+}
 
-  * {
-    box-sizing: border-box;
-  }
-  
-  body {
-    margin: 0;
-    font-family: Poppins, sans-serif;
-    background: #fff;
-    color: var(--navy);
-  }
-  
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Poppins, sans-serif;
+  background: #fff;
+  color: var(--navy);
+  overflow: hidden; /* zabrání přetékání */
+}
+
+/* === KONTEJNER === */
+.container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  max-width: 100%;
+  height: 100%; /* výška se musí řídit iframe výškou */
+  padding: 20px 16px;
+  gap: 24px;
+  align-items: stretch;
+}
+
+/* === SEKCÍ === */
+.table-section,
+.chart-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+/* === ŘÁDKY HODNOCENÍ === */
+.row {
+  display: grid;
+  grid-template-columns: 120px 1fr 32px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.label {
+  font-weight: 600;
+}
+
+.bar-container {
+  background: #d9dee5;
+  height: 10px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.bar {
+  height: 100%;
+  background: var(--lime);
+  border-radius: 6px;
+}
+
+.value {
+  text-align: right;
+  font-weight: 600;
+}
+
+/* === GRAF === */
+canvas {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 100%;
+}
+
+/* === MOBIL === */
+@media (max-width: 768px) {
   .container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    width: 100%;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 20px;
-    gap: 32px;
-    align-items: flex-start;
-  }
-  
-  . table-section,
-  .chart-section {
-    flex: 1 1 50%;
-    display: flex;
     flex-direction: column;
-    justify-content: center;
+    height: auto;
+    gap: 20px;
   }
-  
-  .row {
-    display: grid;
-    grid-template-columns: 120px 1fr 32px;
-    align-items: center;
-    margin-bottom: 12px;
+
+  .chart-section,
+  .table-section {
+    width: 100%;
+    height: auto;
   }
-  
-  .label {
-    font-weight: 600;
+
+  canvas {
+    max-height: 325px;
+    width: 100%;
   }
-  
-  .bar-container {
-    background: #d9dee5;
-    height: 10px;
-    border-radius: 6px;
-    overflow: hidden;
-  }
-  
-  .bar {
-    height: 100%;
-    background: var(--lime);
-    border-radius: 6px;
-  }
-  
-  .value {
-    text-align: right;
-    font-weight: 600;
-  }
-  
-  /* === MOBILE / TABLET BREAKPOINT === */
-  @media (max-width: 768px) {
-    .container {
-      flex-direction: column;
-      gap: 24px;
-      padding: 16px;
-    }
-  
-    .chart-section,
-    .table-section {
-      width: 100%;
-    }
-  
-    canvas {
-      max-height: 325px;
-      width: 100%;
-      height: auto;
-    }
-  }
+}
   </style>
 </head>
 <body>
