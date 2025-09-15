@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title></title>
+  <title>Radar hodnocení rakety</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
@@ -23,96 +23,83 @@
       --lime: #c6e801;
     }
 
-* {
-  box-sizing: border-box;
-}
+    * {
+      box-sizing: border-box;
+    }
 
-body {
-  margin: 0;
-  font-family: Poppins, sans-serif;
-  background: #fff;
-  color: var(--navy);
-  overflow: hidden; /* zabrání přetékání */
-}
+    .container {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      max-width: 100%;
+      height: 100%;
+      padding: 20px 16px;
+      gap: 24px;
+      align-items: stretch;
+    }
 
-/* === KONTEJNER === */
-.container {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  max-width: 100%;
-  height: 100%; /* výška se musí řídit iframe výškou */
-  padding: 20px 16px;
-  gap: 24px;
-  align-items: stretch;
-}
+    .table-section,
+    .chart-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+    }
 
-/* === SEKCÍ === */
-.table-section,
-.chart-section {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-}
+    .row {
+      display: grid;
+      grid-template-columns: 120px 1fr 32px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
 
-/* === ŘÁDKY HODNOCENÍ === */
-.row {
-  display: grid;
-  grid-template-columns: 120px 1fr 32px;
-  align-items: center;
-  margin-bottom: 12px;
-}
+    .label {
+      font-weight: 600;
+    }
 
-.label {
-  font-weight: 600;
-}
+    .bar-container {
+      background: #d9dee5;
+      height: 10px;
+      border-radius: 6px;
+      overflow: hidden;
+    }
 
-.bar-container {
-  background: #d9dee5;
-  height: 10px;
-  border-radius: 6px;
-  overflow: hidden;
-}
+    .bar {
+      height: 100%;
+      background: var(--lime);
+      border-radius: 6px;
+    }
 
-.bar {
-  height: 100%;
-  background: var(--lime);
-  border-radius: 6px;
-}
+    .value {
+      text-align: right;
+      font-weight: 600;
+    }
 
-.value {
-  text-align: right;
-  font-weight: 600;
-}
+    canvas {
+      width: 100% !important;
+      height: auto !important;
+      max-height: 100%;
+    }
 
-/* === GRAF === */
-canvas {
-  width: 100% !important;
-  height: auto !important;
-  max-height: 100%;
-}
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        height: auto;
+        gap: 20px;
+      }
 
-/* === MOBIL === */
-@media (max-width: 768px) {
-  .container {
-    flex-direction: column;
-    height: auto;
-    gap: 20px;
-  }
+      .chart-section,
+      .table-section {
+        width: 100%;
+        height: auto;
+      }
 
-  .chart-section,
-  .table-section {
-    width: 100%;
-    height: auto;
-  }
-
-  canvas {
-    max-height: 325px;
-    width: 100%;
-  }
-}
+      canvas {
+        max-height: 325px;
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
