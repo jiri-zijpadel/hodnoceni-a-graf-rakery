@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Radar graf</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root { --navy:#003d79; --lime:#c6e801; }
+    body {
+      margin:0; font-family:Poppins,sans-serif; color:var(--navy);
+      width:100%; background:#fff; display:flex; justify-content:center; align-items:center;
+    }
+    .chart-section { width:100%; max-width:960px; padding:20px 16px; }
+    canvas { width:100% !important; max-height:400px; }
+  </style>
+</head>
+<body>
+  <div class="chart-section">
+    <canvas id="radarChart"></canvas>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const metrics = [
+      { key:'sila', label:'Síla' },
+      { key:'kontrola', label:'Kontrola' },
+      { key:'komfort', label:'Komfort' },
+      { key:'ovladatelnost', label:'Ovladatelnost' },
+      { key:'rotace', label:'Rotace míče' },
+      { key:'tolerance', label:'Tolerance' }
+    ];
+    const labels = metrics.map(m=>m.label);
+    const chartData = metrics.map(m=>parseInt(params.get(m.key))||0);
+
+    new Chart(document.getElementById('radarChart'), {
+      type:'radar',
+      data:{
+        labels,
+        datasets:[{
+          data:chartData,
+          backgroundColor:'rgba(198,232,1,0.2)',
+          borderColor:'#003d79',
+          borderDash:[5,5],
+          pointBackgroundColor:'#003d79',
+          pointRadius:4,
+          borderWidth:2
+        }]
+      },
+      options:{
+        responsive:true,
+        maintainAspectRatio:false,
+        scales:{
+          r:{
+            min:0,max:10,
+            ticks:{stepSize:2,display:false},
+            grid:{color:'#c6e801'},
+            angleLines:{color:'#c6e801'},
+            pointLabels:{
+              color:'#003d79',
+              font:{size:14,family:'Poppins'}
+            }
+          }
+        },
+        plugins:{ legend:{display:false} }
+      }
+    });
+  </script>
+</body>
+</html>
