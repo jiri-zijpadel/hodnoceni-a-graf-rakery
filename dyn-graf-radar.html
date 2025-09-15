@@ -80,23 +80,28 @@
       text-align: right;
       font-weight: 600;
     }
-
+    @media (max-width: 990px) {
+      .container {
+        flex-direction: column;
+        gap: 20px;
+      }
+  
+      .table-wrapper,
+      .chart-wrapper {
+        width: 100%;
+      }
+  
+      canvas {
+        max-height: 325px;
+        width: 100%;
+      }
+    }
     canvas {
       width: 100% !important;
       height: 100% !important;
       max-height: 325px;
     }
 
-    @media screen and (max-width: 860px) {
-      .container {
-        flex-direction: column;
-        height: auto;
-      }
-
-      .chart-section {
-        height: 400px;
-      }
-    }
   </style>
 </head>
 <body>
